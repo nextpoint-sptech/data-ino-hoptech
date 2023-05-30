@@ -99,36 +99,64 @@ const serial = async (
                     .catch(err => console.log("erro! " + err));
 
             } else if (AMBIENTE == 'desenvolvimento') {
+                var plantacao = 1 // identificação da plantação
+                var empresa = 2 // identificação da empresa
+                // Esses identificadores mudam de acordo com a empresa que contrata e plantação que está sendo inserido, de maneira manual,
+                // na instalação de software e sensores dentro da plantação.
 
-                // altere!
-                // Este insert irá inserir os dados na tabela "medida"
-                // -> altere nome da tabela e colunas se necessário
-                // Este insert irá inserir dados de fk_aquario id=1 (fixo no comando do insert abaixo)
-                // >> você deve ter o aquario de id 1 cadastrado.
                 await poolBancoDados.execute(
-                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 1, 1, 2)",
-                    [dht11Umidade]
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 1, ?, ?)",
+                    [dht11Umidade, plantacao, empresa]
                 );
 
                 await poolBancoDados.execute(
-                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 2, 1, 2)",
-                    [dht11Temperatura]
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 2, ?, ?)",
+                    [dht11Temperatura, plantacao, empresa]
                 );
 
                 await poolBancoDados.execute(
-                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 3, 1, 2)",
-                    [lm35Temperatura]
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 3, ?, ?)",
+                    [lm35Temperatura, plantacao, empresa]
                 );
 
                 await poolBancoDados.execute(
-                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 4, 1, 2)",
-                    [luminosidade]
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 4, ?, ?)",
+                    [luminosidade, plantacao, empresa]
                 );
 
                 await poolBancoDados.execute(
-                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 5, 1, 2)",
-                    [chave]
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 5, ?, ?)",
+                    [chave, plantacao, empresa]
                 );
+                ///////////////////////////////////////////////////////////////////////////////
+
+                await poolBancoDados.execute(
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 5, 2, ?)",
+                    [dht11Umidade, empresa]
+                );
+
+                
+                await poolBancoDados.execute(
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 4, 2, ?)",
+                    [dht11Temperatura, empresa]
+                );
+
+                await poolBancoDados.execute(
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 3, 2, ?)",
+                    [lm35Temperatura, empresa]
+                );
+
+                await poolBancoDados.execute(
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 2, 2, ?)",
+                    [luminosidade,  empresa]
+                );
+
+                await poolBancoDados.execute(
+                    "INSERT INTO capturaLuminosidade (dtCaptura, hrCaptura, luminosidade, fkSensor, fkPlantacao, fkEmpresa) VALUES (curdate(), curtime(), ?, 1, 2, ?)",
+                    [chave, empresa]
+                );
+
+                
 
             } else {
                 throw new Error('Ambiente não configurado. Verifique o arquivo "main.js" e tente novamente.');
